@@ -19,14 +19,13 @@ async function getAuditLogs(req, res) {
     }
 
     const limitNum = parseInt(limit) || 100;
-    sql += ' ORDER BY al.created_at DESC LIMIT ?';
-    params.push(limitNum);
+    sql += ' ORDER BY al.created_at DESC LIMIT ' + limitNum;
 
     const logs = await query(sql, params);
     res.status(200).json(logs);
   } catch (error) {
     console.error('Get audit logs error:', error);
-    res.status(500).json({ message: 'Internal server error retrieving audit logs', error: error.message });
+    res.status(500).json({ message: 'Internal server error retrieving audit logs' });
   }
 }
 
