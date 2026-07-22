@@ -58,9 +58,15 @@ async function getAppointments(req, res) {
   }
 }
 
+function normalizeMySQLDate(dateStr) {
+  if (!dateStr) return dateStr;
+  return dateStr.replace('T', ' ').replace(/\.\d+Z$/, '').replace(/\.\d+$/, '');
+}
+
 // Create (schedule) an appointment
 async function createAppointment(req, res) {
-  const { doctor_id, appointment_date, notes = '', patient_id: reqPatientId } = req.body;
+  const { doctor_id, appointment_date: rawDate, notes = '', patient_id: reqPatientId } = req.body;
+  const appointment_date = normalizeMySQLDate(rawDate);
   const user = req.user;
   const clientIp = req.ip || req.connection.remoteAddress;
 
@@ -116,14 +122,15 @@ async function createAppointment(req, res) {
 
   } catch (error) {
     console.error('Schedule appointment error:', error);
-    res.status(500).json({ message: 'Internal server error scheduling appointment', error: error.message });
+    res.status(500).json({ message: 'Internal server error scheduling appointment' });
   }
 }
 
 // Update appointment details or status
 async function updateAppointment(req, res) {
   const { id } = req.params;
-  const { status, appointment_date, notes } = req.body;
+  const { status, appointment_date: rawDate, notes } = req.body;
+  const appointment_date = rawDate ? normalizeMySQLDate(rawDate) : undefined;
   const user = req.user;
   const clientIp = req.ip || req.connection.remoteAddress;
 
