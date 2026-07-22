@@ -42,6 +42,7 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date() });
 });
 app.head('/', (req, res) => res.status(200).end());
+app.get('/', (req, res) => res.status(200).json({ status: 'OK', message: 'HPMS Backend API' }));
 
 // Global Error Handler
 app.use((err, req, res, next) => {
