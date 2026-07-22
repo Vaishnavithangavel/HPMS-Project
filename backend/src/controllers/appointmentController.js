@@ -116,7 +116,7 @@ async function createAppointment(req, res) {
 
   } catch (error) {
     console.error('Schedule appointment error:', error);
-    res.status(500).json({ message: 'Internal server error scheduling appointment' });
+    res.status(500).json({ message: 'Internal server error scheduling appointment', error: error.message });
   }
 }
 
