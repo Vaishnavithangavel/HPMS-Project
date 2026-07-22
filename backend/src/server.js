@@ -37,10 +37,11 @@ app.use('/api/records', recordRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/audit', auditRoutes);
 
-// Health check endpoint
+// Health check endpoints
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date() });
 });
+app.head('/', (req, res) => res.status(200).end());
 
 // Global Error Handler
 app.use((err, req, res, next) => {
